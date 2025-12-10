@@ -1,0 +1,1812 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Student Wellness Hub – MCQ Exam Quiz (Light Mode)</title>
+    <style>
+        :root {
+            --bg: #f6f8fc;
+            --card: #ffffff;
+            --card2: #fbfcff;
+            --text: #0f172a;
+            --muted: #475569;
+            --border: #e5e7eb;
+            --shadow: 0 10px 28px rgba(15, 23, 42, .07);
+            --shadow2: 0 6px 16px rgba(15, 23, 42, .06);
+            --ok: #16a34a;
+            --bad: #dc2626;
+            --warn: #b45309;
+            --accent: #2563eb;
+            --codebg: #0b1020;
+            --codetext: #eaf0ff;
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+            background:
+                radial-gradient(900px 500px at 10% 0%, rgba(37, 99, 235, .12), transparent 60%),
+                radial-gradient(800px 500px at 90% 0%, rgba(236, 72, 153, .10), transparent 55%),
+                var(--bg);
+            color: var(--text);
+        }
+
+        header {
+            padding: 26px 16px 10px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0 0 8px;
+            font-size: 22px;
+            letter-spacing: .2px;
+        }
+
+        p {
+            margin: 0 0 14px;
+            color: var(--muted);
+            line-height: 1.55;
+        }
+
+        .bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .85);
+            backdrop-filter: blur(8px);
+            border-radius: 16px;
+            box-shadow: var(--shadow2);
+        }
+
+        .stat {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: var(--card2);
+            font-size: 14px;
+        }
+
+        .stat strong {
+            font-weight: 800
+        }
+
+        .btn {
+            margin-left: auto;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        button {
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text);
+            padding: 10px 12px;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 700;
+            box-shadow: 0 2px 0 rgba(15, 23, 42, .04);
+        }
+
+        button:hover {
+            border-color: #cbd5e1
+        }
+
+        button:active {
+            transform: translateY(1px)
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 14px 16px 44px;
+        }
+
+        .q {
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, .88);
+            backdrop-filter: blur(8px);
+            border-radius: 18px;
+            padding: 16px;
+            margin: 14px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .qhead {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .qnum {
+            font-weight: 900;
+            color: var(--accent);
+            min-width: 52px;
+        }
+
+        .qtitle {
+            flex: 1;
+            font-weight: 800;
+            line-height: 1.35;
+        }
+
+        .qdesc {
+            margin: 6px 0 0;
+            color: var(--muted);
+            line-height: 1.55;
+            font-size: 14px;
+        }
+
+        .badge {
+            min-width: 92px;
+            text-align: center;
+            padding: 7px 10px;
+            border-radius: 999px;
+            font-weight: 900;
+            font-size: 12px;
+            border: 1px solid var(--border);
+            background: #fff;
+            user-select: none;
+            opacity: .98;
+        }
+
+        .badge.ok {
+            border-color: rgba(22, 163, 74, .35);
+            color: var(--ok);
+            background: rgba(22, 163, 74, .08)
+        }
+
+        .badge.bad {
+            border-color: rgba(220, 38, 38, .35);
+            color: var(--bad);
+            background: rgba(220, 38, 38, .08)
+        }
+
+        .badge.wait {
+            border-color: rgba(180, 83, 9, .35);
+            color: var(--warn);
+            background: rgba(180, 83, 9, .08)
+        }
+
+        pre {
+            margin: 10px 0 12px;
+            padding: 12px;
+            overflow: auto;
+            border-radius: 16px;
+            border: 1px solid rgba(15, 23, 42, .10);
+            background: var(--codebg);
+            color: var(--codetext);
+            font-size: 13px;
+            line-height: 1.5;
+            box-shadow: 0 10px 24px rgba(15, 23, 42, .14);
+        }
+
+        code {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace
+        }
+
+        .choices {
+            display: grid;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        label.choice {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 12px 12px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            box-shadow: 0 1px 0 rgba(15, 23, 42, .03);
+        }
+
+        label.choice:hover {
+            border-color: #cbd5e1;
+            box-shadow: 0 10px 20px rgba(15, 23, 42, .06);
+        }
+
+        input[type="radio"] {
+            margin-top: 3px;
+            transform: scale(1.08);
+            accent-color: var(--accent);
+        }
+
+        .choice .ctext {
+            flex: 1;
+            color: var(--text);
+            font-size: 14px;
+            line-height: 1.45;
+        }
+
+        .choice pre {
+            margin: 8px 0 0;
+            border-radius: 14px;
+            box-shadow: none;
+            border-color: rgba(255, 255, 255, .12);
+        }
+
+        .muted {
+            color: var(--muted);
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        .footer {
+            margin-top: 14px;
+            color: var(--muted);
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .done {
+            padding: 10px 12px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--card2);
+        }
+
+        .hint {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px dashed rgba(37, 99, 235, .35);
+            color: rgba(37, 99, 235, .95);
+            background: rgba(37, 99, 235, .06);
+            font-weight: 800;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Student Wellness Hub – Complex MCQ Exam (Light Mode)</h1>
+        <p>
+            Answer each question once. You’ll get instant feedback (Right/Wrong) and your totals update live.
+            Some choices include code snippets—read carefully.
+        </p>
+
+        <div class="bar" id="topBar" aria-live="polite">
+            <div class="stat"><strong>Answered:</strong> <span id="answered">0</span>/<span id="total">0</span></div>
+            <div class="stat"><strong>Correct:</strong> <span id="correct">0</span></div>
+            <div class="stat"><strong>Wrong:</strong> <span id="wrong">0</span></div>
+            <div class="stat"><strong>Score:</strong> <span id="scorePct">0%</span></div>
+            <div class="btn">
+                <button id="restartBtn" type="button">Restart</button>
+                <button id="revealBtn" type="button">Reveal Answers</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="quiz"></main>
+
+    <script>
+        // Small helper to safely render code/text inside our controlled dataset
+        function escHTML(s) {
+            return String(s)
+                .replaceAll("&", "&amp;")
+                .replaceAll("<", "&lt;")
+                .replaceAll(">", "&gt;")
+                .replaceAll('"', "&quot;")
+                .replaceAll("'", "&#039;");
+        }
+
+        // Choice types:
+        // - { t:"text", v:"..." }
+        // - { t:"code", v:"..." }  (renders inside <pre><code>)
+        // - { t:"html", v:"..." }  (use sparingly; controlled only)
+        function renderChoice(choice) {
+            if (choice.t === "code") {
+                return `<div class="ctext"><pre><code>${escHTML(choice.v)}</code></pre></div>`;
+            }
+            if (choice.t === "html") {
+                return `<div class="ctext">${choice.v}</div>`;
+            }
+            return `<div class="ctext">${escHTML(choice.v)}</div>`;
+        }
+
+        // === QUIZ DATA (25 descriptive, tricky questions w/ code answers) ===
+        // NOTE: You can add more questions by copying the format. The engine auto-scales.
+        const QUESTIONS = [
+            {
+                title: "Gateway rule semantics: static vs docs vs secured APIs",
+                desc: "You want Swagger UI and OpenAPI JSON to be visible ONLY to staff/admin roles, while the rest of the API remains secured by JWT. Given the WebFlux rule below, which interpretation is most correct about what is protected (assuming no earlier permitAll matches)?",
+                code:
+                    `.pathMatchers("/api/swagger-ui", "/swagger-ui/**", "/webjars/**",
+              "/v3/api-docs/**", "/api/*/v3/api-docs")
+.hasAnyAuthority("ROLE_ADMIN","ROLE_staff")`,
+                choices: [
+                    { t: "text", v: "Only /api/swagger-ui is restricted; the other patterns are treated as static assets and bypass authorization in WebFlux." },
+                    { t: "text", v: "All listed paths require the caller to have ROLE_ADMIN or ROLE_staff; other routes can still use different rules." },
+                    { t: "text", v: "The rule is ignored because pathMatchers cannot match more than 4 patterns at once." },
+                    { t: "text", v: "The rule protects only /v3/api-docs/**; the /api/*/v3/api-docs form is normalized away by Spring." }
+                ],
+                answer: 1
+            },
+            {
+                title: "TokenRelay vs internal service-to-service calls",
+                desc: "A request enters the Gateway with a user’s JWT, then the goal-tracking service calls wellness-service using Feign. Which flow is most accurate when both TokenRelay (Gateway) and a Feign interceptor (service) exist?",
+                code:
+                    `# Gateway route:
+filters:
+  - TokenRelay
+
+// Feign interceptor:
+template.header("Authorization", "Bearer " + tokenValue);`,
+                choices: [
+                    { t: "text", v: "TokenRelay forwards the inbound Authorization header downstream; the Feign interceptor forwards a token again on the internal call (depending on how it reads SecurityContext)." },
+                    { t: "text", v: "TokenRelay converts JWT into a session cookie; Feign reads the cookie and creates a new JWT." },
+                    { t: "text", v: "Feign never forwards Authorization headers in Spring; only the Gateway can forward tokens." },
+                    { t: "text", v: "TokenRelay overwrites any Authorization header to a client-credentials token automatically." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Swagger UI aggregation behavior",
+                desc: "Your Gateway Swagger UI is configured with multiple urls entries. What does that actually change in the UI/runtime?",
+                code:
+                    `springdoc:
+  swagger-ui:
+    urls:
+      - name: wellness
+        url: /api/resources/v3/api-docs
+      - name: goals
+        url: /api/goals/v3/api-docs`,
+                choices: [
+                    { t: "text", v: "Swagger UI offers a dropdown to switch between multiple OpenAPI documents; it does not inherently merge them into a single spec." },
+                    { t: "text", v: "All docs are merged into a single JSON at /v3/api-docs and served as one combined document." },
+                    { t: "text", v: "Each service’s /v3/api-docs endpoint is disabled and only the Gateway will expose documentation." },
+                    { t: "text", v: "It automatically configures OAuth flows and refresh tokens using Keycloak provider metadata." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Roles: hasRole vs hasAuthority mismatch",
+                desc: "In one service you use hasRole(\"staff\"), and in the Gateway you use hasAnyAuthority(\"ROLE_staff\"). Which statement is most correct in typical Spring Security role handling?",
+                choices: [
+                    { t: "text", v: "They usually align: hasRole(\"staff\") checks for an authority named ROLE_staff under the hood." },
+                    { t: "text", v: "They are unrelated: hasRole reads only scope claims (SCOPE_staff) and ignores ROLE_ authorities." },
+                    { t: "text", v: "They only align in WebFlux but not in WebMVC." },
+                    { t: "text", v: "They align only if you disable JwtAuthenticationConverter entirely." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Resilience4j fallback signature correctness",
+                desc: "A Resilience4j fallback must match the original method parameters plus an exception at the end. Which signature is the best match for a method like getGoalWithResources(String id)?",
+                choices: [
+                    { t: "code", v: "GoalResponse getGoalWithResourcesFallback(Throwable t, String id)" },
+                    { t: "code", v: "GoalResponse getGoalWithResourcesFallback(String id, Throwable t)" },
+                    { t: "code", v: "GoalResponse getGoalWithResourcesFallback(String id)" },
+                    { t: "code", v: "void getGoalWithResourcesFallback(String id, Exception e)" }
+                ],
+                answer: 1
+            },
+            {
+                title: "Circuit breaker evaluation threshold",
+                desc: "Given a COUNT-based sliding window, minimumNumberOfCalls=5, slidingWindowSize=10, threshold=50%. When can the breaker open (most accurate)?",
+                choices: [
+                    { t: "text", v: "Only after 10 calls, because the sliding window must be full before any computation occurs." },
+                    { t: "text", v: "After at least 5 calls: once failure rate crosses 50% for the calls considered, it may open." },
+                    { t: "text", v: "Immediately on first failure, because 1/1 is 100% and exceeds 50%." },
+                    { t: "text", v: "Never, because the threshold is ignored unless TIME_BASED windows are used." }
+                ],
+                answer: 1
+            },
+            {
+                title: "Cache key selection subtlety (create vs update)",
+                desc: "Why might create use #result.id() while update uses #id? Choose the strongest reasoning.",
+                code:
+                    `@CachePut(value="resourceById", key="#result.id()") // create
+@CachePut(value="resourceById", key="#id")          // update`,
+                choices: [
+                    { t: "text", v: "Create may not have an id argument yet; using #result.id() keys by the persisted identifier returned by the method." },
+                    { t: "text", v: "Update cannot use #result because caching runs before the method executes, so #result is always null." },
+                    { t: "text", v: "Both forms are identical; Spring rewrites the key to the repository id automatically." },
+                    { t: "text", v: "#result is illegal in cache annotations and is ignored by Spring." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Cache invalidation risk profile",
+                desc: "A service caches lists (allResources, byCategory, byKeyword). On update/delete, you evict allEntries=true for those caches. What is the real tradeoff of this design?",
+                choices: [
+                    { t: "text", v: "Higher correctness, lower hit-rate: you avoid stale list views but rebuild list caches more often." },
+                    { t: "text", v: "Lower correctness, higher hit-rate: eviction keeps old results longer and speeds up reads." },
+                    { t: "text", v: "No effect: Redis ignores allEntries=true unless a TTL is configured." },
+                    { t: "text", v: "It prevents caching of individual resources, because list eviction clears unrelated caches too." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Docker profile + healthcheck port mismatch",
+                desc: "Your Dockerfile healthcheck probes port 8082, but docker profile sets server.port=8086. What typically happens (assuming no other overrides)?",
+                choices: [
+                    { t: "text", v: "Container starts, but healthcheck fails because it probes the wrong port; orchestrators may restart it." },
+                    { t: "text", v: "Build fails because EXPOSE must match server.port." },
+                    { t: "text", v: "Keycloak rejects JWTs because the service port changed." },
+                    { t: "text", v: "Flyway fails because it binds to the healthcheck port." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Authorization Code flow redirect URIs",
+                desc: "A Keycloak client has redirect URIs for both the Gateway and Postman’s oauth callback domain. What does this primarily enable?",
+                choices: [
+                    { t: "text", v: "Authorization Code flow can redirect back to either the Gateway-hosted UI or Postman’s built-in callback during OAuth testing." },
+                    { t: "text", v: "Client Credentials flow to obtain admin tokens without any user interaction." },
+                    { t: "text", v: "Password grant flow without client secret." },
+                    { t: "text", v: "Device Code flow without a browser." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway as OAuth2 client and resource server",
+                desc: "A Gateway can contain both an OAuth2 client config and a resource server config. Why would a real project do both?",
+                choices: [
+                    { t: "text", v: "Client config supports login/TokenRelay behavior; resource server config validates bearer tokens on inbound API requests." },
+                    { t: "text", v: "It is redundant; Spring disables whichever is declared second." },
+                    { t: "text", v: "It is needed only for Redis caching." },
+                    { t: "text", v: "It forces Keycloak to issue opaque tokens instead of JWTs." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Cloud Stream binding name vs Kafka topic",
+                desc: "You publish with StreamBridge using a binding name. Which statement is most correct about what that string represents?",
+                choices: [
+                    { t: "code", v: 'streamBridge.send("goalCompleted-out-0", event);' },
+                    { t: "text", v: "It is a binding name that maps to an actual destination/topic via configuration; it is not necessarily the literal topic name." },
+                    { t: "text", v: "It must equal the Kafka topic name exactly or the message is dropped." },
+                    { t: "text", v: "It is the consumer group id used for the event-service consumer." },
+                    { t: "text", v: "It is the Schema Registry subject name used for compatibility checks." }
+                ],
+                answer: 1
+            },
+            {
+                title: "Function binding convention for Consumers",
+                desc: "Event-service declares a Consumer bean named goalCompleted. How does Spring Cloud Stream typically bind it?",
+                choices: [
+                    { t: "code", v: "@Bean\npublic Consumer<GoalCompletedEvent> goalCompleted() { ... }" },
+                    { t: "text", v: "By convention, the function name maps to bindings like goalCompleted-in-0 (and out-0 if applicable), then configuration maps to destinations." },
+                    { t: "text", v: "It requires @KafkaListener; Consumer beans are ignored at runtime." },
+                    { t: "text", v: "It binds to a topic named GoalCompletedEvent by default using reflection on the generic type." },
+                    { t: "text", v: "It binds only if the method is static and inside the main class." }
+                ],
+                answer: 1
+            },
+            {
+                title: "DynamicPropertySource in Testcontainers",
+                desc: "Why do integration tests wire container addresses into Spring properties dynamically?",
+                choices: [
+                    { t: "text", v: "Because container ports/URLs are allocated at runtime; the test must inject the actual URIs so the app under test talks to the containers." },
+                    { t: "text", v: "Because it replaces Gradle dependencies so Docker is not needed." },
+                    { t: "text", v: "Because it disables JWT signature checks by overriding issuer-uri." },
+                    { t: "text", v: "Because it forces WebFlux and reduces startup time." }
+                ],
+                answer: 0
+            },
+            {
+                title: "401 vs 403 in security tests",
+                desc: "A test expects 401 when calling a protected endpoint without a token. Why is 401 the most aligned status code?",
+                choices: [
+                    { t: "text", v: "Because the request lacks valid authentication credentials (authentication failure)." },
+                    { t: "text", v: "Because the user is authenticated but lacks a required role (authorization failure)." },
+                    { t: "text", v: "Because missing endpoints return 401 by default." },
+                    { t: "text", v: "Because expired tokens always produce 403, not 401." }
+                ],
+                answer: 0
+            },
+            {
+                title: "issuer-uri vs jwk-set-uri configuration intent",
+                desc: "Some projects set both issuer-uri and jwk-set-uri. What’s the best reason you might see both in tests/config?",
+                choices: [
+                    { t: "text", v: "It can reduce ambiguity: issuer metadata discovery uses issuer-uri, while direct key fetching uses jwk-set-uri; different environments may rely on one path more reliably." },
+                    { t: "text", v: "Spring Security requires both at compile time." },
+                    { t: "text", v: "It disables signature validation and checks only claims." },
+                    { t: "text", v: "MockMvc needs both but WebTestClient needs neither." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Feign URL placeholder failure mode",
+                desc: "A Feign client uses url=\"${wellness-resource-service.url}\". If the property is missing at startup, what is the most typical outcome?",
+                choices: [
+                    { t: "text", v: "Application fails to start due to an unresolved placeholder / invalid configuration for the client." },
+                    { t: "text", v: "Feign automatically falls back to calling http://<name> using Docker DNS." },
+                    { t: "text", v: "Resilience4j supplies the URL from its circuit breaker instance name." },
+                    { t: "text", v: "TokenRelay detects the missing URL and routes through the Gateway automatically." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway route path alignment with downstream controllers",
+                desc: "Gateway routes Path=/api/events/** to event-service. The event-service controller mappings begin with /api/events. Without RewritePath, what is most likely true?",
+                choices: [
+                    { t: "text", v: "The downstream sees the same /api/events/... path, so controller mappings that include /api/events align naturally." },
+                    { t: "text", v: "The Gateway strips /api/events automatically, so the service must map to /." },
+                    { t: "text", v: "Only query parameters are forwarded; paths require TokenRelay." },
+                    { t: "text", v: "Gateway rewrites everything to /actuator/** by default." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Docker networking and hostname resolution",
+                desc: "In docker-compose, services share a user-defined network. Why does spring.data.redis.host change from localhost to redis for docker profile?",
+                choices: [
+                    { t: "text", v: "Inside a container, localhost points to itself; using the service name (redis) resolves via Docker DNS to the correct container." },
+                    { t: "text", v: "Redis blocks localhost by default unless TLS is enabled." },
+                    { t: "text", v: "Spring forbids localhost when SPRING_PROFILES_ACTIVE=docker is set." },
+                    { t: "text", v: "Docker rewrites localhost to the Gateway container for security." }
+                ],
+                answer: 0
+            },
+            {
+                title: "OpenAPI SecurityScheme naming and referencing",
+                desc: "In OpenAPI config you add a scheme with a name like \"bearer-key\". What does that name actually impact?",
+                choices: [
+                    { t: "text", v: "It’s an internal OpenAPI identifier used when referencing security requirements; it does not need to match Keycloak client ids/secrets." },
+                    { t: "text", v: "It must match the Keycloak client secret name or Swagger UI cannot send tokens." },
+                    { t: "text", v: "It forces Spring Security to secure all endpoints automatically." },
+                    { t: "text", v: "It is ignored unless using WebFlux." }
+                ],
+                answer: 0
+            },
+            {
+                title: "More subtle: hasAuthority vs claims mapping",
+                desc: "Suppose Keycloak emits roles under a claim like realm_access.roles = [\"student\",\"staff\"]. You rely on ROLE_staff authorities in Spring. What must be true for authorization to succeed?",
+                choices: [
+                    { t: "text", v: "A JwtGrantedAuthoritiesConverter (or similar) must map those claim values into GrantedAuthority strings that match what your rules check." },
+                    { t: "text", v: "Nothing; Spring automatically maps any JWT claim into ROLE_ authorities." },
+                    { t: "text", v: "Only the Gateway needs role mapping; downstream services always trust the Gateway." },
+                    { t: "text", v: "Only Redis cache must be enabled; otherwise roles cannot be read." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based answer: Which snippet evicts list caches correctly?",
+                desc: "Pick the snippet that best clears list caches likely to become stale when a resource changes, without touching unrelated caches.",
+                choices: [
+                    { t: "code", v: '@CacheEvict(value="resourceById", key="#id")\npublic Resource update(String id, ...) { ... }' },
+                    { t: "code", v: '@Caching(evict={\n  @CacheEvict(value="allResources", allEntries=true),\n  @CacheEvict(value="resourcesByCategory", allEntries=true),\n  @CacheEvict(value="resourcesByKeyword", allEntries=true)\n})\npublic Resource update(String id, ...) { ... }' },
+                    { t: "code", v: '@Cacheable(value="allResources", allEntries=true)\npublic Resource update(String id, ...) { ... }' },
+                    { t: "code", v: '@CachePut(value="allResources", key="#id")\npublic Resource update(String id, ...) { ... }' }
+                ],
+                answer: 1
+            },
+            {
+                title: "Reactive vs Servlet security chain behavior",
+                desc: "Your API Gateway is WebFlux and uses SecurityWebFilterChain. A teammate tries to copy a servlet-style SecurityFilterChain config into the Gateway. What is the most likely outcome and why?",
+                code: `// teammate adds in Gateway (WebFlux app)\n@Bean\nSecurityFilterChain filterChain(HttpSecurity http) throws Exception { ... }`,
+                choices: [
+                    { t: "text", v: "It compiles and runs, but the servlet chain is ignored because WebFlux uses SecurityWebFilterChain; the Gateway remains governed by reactive security." },
+                    { t: "text", v: "It replaces the reactive chain because Spring always prefers SecurityFilterChain when present." },
+                    { t: "text", v: "It fails at runtime only when OAuth2 is enabled; otherwise both chains coexist." },
+                    { t: "text", v: "It works but forces the entire Gateway to switch to MVC mode automatically." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Route ordering and shadowing",
+                desc: "Two Gateway routes can both match a request path. Which statement best describes what decides which route is selected (assuming both predicates match)?",
+                code: `spring:\n  cloud:\n    gateway:\n      routes:\n        - id: routeA\n          predicates: [ Path=/api/** ]\n        - id: routeB\n          predicates: [ Path=/api/events/** ]`,
+                choices: [
+                    { t: "text", v: "Route selection is order-sensitive; the first matching route in the list can shadow later routes unless explicit ordering is applied." },
+                    { t: "text", v: "The most specific Path predicate always wins, regardless of list order." },
+                    { t: "text", v: "The route with the lowest id lexicographically wins (routeA < routeB)." },
+                    { t: "text", v: "Gateway will round-robin between all matching routes to balance traffic." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "RewritePath: what the downstream sees",
+                desc: "You add RewritePath to remove the /api/events prefix. If the service controllers are mapped to /api/events/**, what is the most probable effect?",
+                code: `filters:\n  - RewritePath=/api/events/(?<segment>.*), /$\{segment}`,
+                choices: [
+                    { t: "text", v: "The service now receives paths like /<segment>, so controller mappings that include /api/events will no longer match unless updated." },
+                    { t: "text", v: "No change; RewritePath only affects response bodies, not request routing." },
+                    { t: "text", v: "It breaks JWT validation because the issuer-uri depends on the request path." },
+                    { t: "text", v: "It only strips query params; the /api/events prefix is preserved." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Keycloak realm roles vs client roles mapping",
+                desc: "Your token includes client roles under resource_access.<client>.roles, but your Spring converters read realm_access.roles. What’s the most likely authorization result?",
+                choices: [
+                    { t: "text", v: "Users authenticate successfully, but authorization checks for roles fail because the converter never maps client roles into GrantedAuthority." },
+                    { t: "text", v: "Authorization still works because Spring automatically searches all claims for any array named roles." },
+                    { t: "text", v: "Authorization fails at token signature validation before role mapping is considered." },
+                    { t: "text", v: "Only Swagger endpoints fail; API endpoints keep working due to TokenRelay." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "CORS + Gateway + Authorization header",
+                desc: "A browser SPA calls the Gateway. Requests work in Postman but fail in the browser with a CORS error when sending Authorization. What is the best fix in a Gateway context?",
+                choices: [
+                    { t: "text", v: "Ensure CORS is configured to allow the origin and include Authorization in allowed headers, plus allow credentials only if needed." },
+                    { t: "text", v: "Disable CSRF in all microservices; CORS is handled automatically by Spring Security." },
+                    { t: "text", v: "Add TokenRelay to the route; TokenRelay also resolves CORS preflight." },
+                    { t: "text", v: "Add @CrossOrigin to Feign clients, because the internal call triggers the CORS failure." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Actuator exposure: why metrics might be missing",
+                desc: "You try GET /actuator/metrics and get 404 in a service container. Which is the most likely configuration cause?",
+                code: `management:\n  endpoints:\n    web:\n      exposure:\n        include: health,info`,
+                choices: [
+                    { t: "text", v: "Metrics aren’t exposed because the exposure include list omits metrics (and possibly prometheus)." },
+                    { t: "text", v: "Actuator endpoints require ADMIN role by default; missing token causes 404." },
+                    { t: "text", v: "The service must run on port 9000 for actuator; otherwise actuator is disabled." },
+                    { t: "text", v: "Actuator endpoints are not available when using PostgreSQL." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Resilience4j: fallback vs successful response caching",
+                desc: "A Feign call is wrapped with a circuit breaker and the fallback returns a default object. Which statement is most accurate about how this affects caching layers?",
+                choices: [
+                    { t: "text", v: "Fallback can be cached if your caching annotation wraps the circuit breaker method; you might unintentionally cache default data unless you guard it." },
+                    { t: "text", v: "Fallback responses are never cached because Resilience4j marks them as errors internally." },
+                    { t: "text", v: "Fallback automatically sets Cache-Control headers to prevent Redis caching." },
+                    { t: "text", v: "Fallback forces the circuit breaker to remain CLOSED even when downstream is down." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Redis serialization mismatch symptom",
+                desc: "You store DTOs in Redis cache. After a deployment, you see ClassCastException / deserialization errors when reading cache. What is the most plausible explanation?",
+                choices: [
+                    { t: "text", v: "Cached objects serialized under an older class structure/serializer no longer match; clearing cache or using stable JSON serialization prevents this." },
+                    { t: "text", v: "Redis cannot store Java objects; it only stores strings." },
+                    { t: "text", v: "This happens only if Redis is running in Docker; local Redis never deserializes." },
+                    { t: "text", v: "It occurs because @Cacheable cannot be used with DTO return types." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "HTTP status semantics in Gateway vs service",
+                desc: "A request with a valid JWT hits the Gateway, but the downstream service denies role access. Which status is more semantically correct to surface to the client?",
+                choices: [
+                    { t: "text", v: "403 Forbidden, because the user is authenticated but not authorized for the resource." },
+                    { t: "text", v: "401 Unauthorized, because any denial should be treated as authentication failure." },
+                    { t: "text", v: "404 Not Found, because security should hide endpoint existence." },
+                    { t: "text", v: "500 Internal Server Error, because authorization is a server-side concern." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Code-based: correct JwtAuthenticationConverter mapping (conceptual)",
+                desc: "You need to map Keycloak realm roles into ROLE_* authorities. Which snippet is the most reasonable direction (conceptually) in Spring Security?",
+                choices: [
+                    { t: "code", v: `JwtGrantedAuthoritiesConverter c = new JwtGrantedAuthoritiesConverter();\nc.setAuthorityPrefix("ROLE_");\nc.setAuthoritiesClaimName("realm_access.roles");` },
+                    { t: "code", v: `JwtGrantedAuthoritiesConverter c = new JwtGrantedAuthoritiesConverter();\nc.setAuthoritiesClaimName("Authorization");\nc.setAuthorityPrefix("");` },
+                    { t: "code", v: `JwtDecoder decoder = NimbusJwtDecoder.withJwkSetUri("...").build();\ndecoder.setJwtValidator(token -> OAuth2TokenValidatorResult.success());` },
+                    { t: "code", v: `ReactiveJwtDecoder decoder = new ReactiveJwtDecoder();\ndecoder.setRole("staff");` }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Database migration ordering risk in docker-compose",
+                desc: "A service starts before Postgres is ready; Flyway runs immediately and fails the container. What is a resilient approach?",
+                choices: [
+                    { t: "text", v: "Use container healthchecks + depends_on condition (or retry/backoff at app level) so migrations run once the DB is reachable." },
+                    { t: "text", v: "Remove Flyway; rely on Hibernate ddl-auto=create in production." },
+                    { t: "text", v: "Expose Postgres to the host; Docker readiness checks only work on host ports." },
+                    { t: "text", v: "Increase JVM heap size so Flyway runs faster and avoids timeout." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Testcontainers + Keycloak: why issuer-uri changes",
+                desc: "In local config issuer-uri is http://localhost:8080/realms/x. In Testcontainers, Keycloak runs on a random mapped port. Which statement best explains why tests need DynamicPropertySource?",
+                choices: [
+                    { t: "text", v: "Because the issuer must match the token’s iss claim and Keycloak base URL; container ports are dynamic so the app must read the runtime issuer endpoint." },
+                    { t: "text", v: "Because Spring Security refuses to validate JWTs from localhost during tests." },
+                    { t: "text", v: "Because KeycloakContainer automatically sets issuer-uri in the JVM system properties." },
+                    { t: "text", v: "Because Docker networking forces all services to use 9000 as issuer port." }
+                ],
+                answer: 0
+            },
+
+            {
+                title: "Code-based: identify the bug in cache annotation usage",
+                desc: "Pick the option that is most likely to cause a subtle bug when caching by id (assume id is a String path variable).",
+                choices: [
+                    { t: "code", v: `@Cacheable(value="resourceById", key="#id")\npublic ResourceDto getById(String id) { ... }` },
+                    { t: "code", v: `@Cacheable(value="resourceById", key="#result.id")\npublic ResourceDto getById(String id) { ... }` },
+                    { t: "code", v: `@CachePut(value="resourceById", key="#id")\npublic ResourceDto update(String id, ...) { ... }` },
+                    { t: "code", v: `@CacheEvict(value="resourceById", key="#id")\npublic void delete(String id) { ... }` }
+                ],
+                answer: 1
+            },
+
+            {
+                title: "Kafka consumer group behavior under scaling",
+                desc: "You scale event-service to 3 instances consuming the same topic with the same group id. Which behavior is most accurate?",
+                choices: [
+                    { t: "text", v: "Partitions are divided among instances in the same group; each message is processed by only one instance (per partition assignment)." },
+                    { t: "text", v: "All instances receive every message because scaling always duplicates consumption." },
+                    { t: "text", v: "Only one instance can consume at a time; the others stay idle unless the leader dies." },
+                    { t: "text", v: "Messages are broadcast to all instances if Schema Registry is enabled." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based answer: Which fallback matches the main method signature?",
+                desc: "Main method: ResourceDto getResource(String id). Choose the fallback that Resilience4j will match most reliably.",
+                choices: [
+                    { t: "code", v: "ResourceDto fallback(Throwable t, String id)" },
+                    { t: "code", v: "ResourceDto fallback(String id, Throwable t)" },
+                    { t: "code", v: "Optional<ResourceDto> fallback(String id, Throwable t)" },
+                    { t: "code", v: "void fallback(String id, Throwable t)" }
+                ],
+                answer: 1
+            },
+            {
+                title: "Consumer binding nuance: function name vs destination",
+                desc: "You have function name goalCompleted. In config you set destination goal-completed-topic. Which pair is most consistent with Spring Cloud Stream conventions?",
+                choices: [
+                    {
+                        t: "html",
+                        v: `<div class="ctext">Binding name stays <b>goalCompleted-in-0</b>, destination maps to <b>goal-completed-topic</b> via properties.</div>`
+                    },
+                    {
+                        t: "html",
+                        v: `<div class="ctext">Binding name becomes <b>goal-completed-topic-in-0</b> automatically, because destinations override function names.</div>`
+                    },
+                    {
+                        t: "html",
+                        v: `<div class="ctext">Binding name must exactly equal the Kafka topic name, otherwise the function is never invoked.</div>`
+                    },
+                    {
+                        t: "html",
+                        v: `<div class="ctext">Binding names are ignored in functional mode; only @KafkaListener controls consumption.</div>`
+                    }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway filter choice: StripPrefix vs RewritePath",
+                desc: "A route matches Path=/api/events/**. The downstream service controllers are mapped to /events/** (NOT /api/events/**). Which filter is most direct and least error-prone in this case?",
+                code: `predicates: [ Path=/api/events/** ]\n# downstream expects: /events/**`,
+                choices: [
+                    { t: "text", v: "Use StripPrefix=1 so /api/events/x becomes /events/x, aligning with the service mappings." },
+                    { t: "text", v: "Use TokenRelay, because TokenRelay also removes the gateway prefix automatically." },
+                    { t: "text", v: "Use RewritePath with a regex always; StripPrefix cannot be applied to nested segments." },
+                    { t: "text", v: "No filter needed; the downstream will infer prefix differences from X-Forwarded-* headers." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway and X-Forwarded headers impact",
+                desc: "Your service generates absolute URLs (e.g., in Location headers). Which statement best describes why you might care about X-Forwarded-* headers behind the Gateway?",
+                choices: [
+                    { t: "text", v: "They help the service infer the original scheme/host/path, which can affect URL generation, redirects, and Swagger server URLs." },
+                    { t: "text", v: "They are required for JWT signature validation, otherwise tokens are rejected." },
+                    { t: "text", v: "They allow Redis to cache responses by client IP automatically." },
+                    { t: "text", v: "They are only used by Feign clients, not HTTP controllers." }
+                ],
+                answer: 0
+            },
+            {
+                title: "OAuth2: client credentials vs password grant in Postman",
+                desc: "You want to simulate a staff user calling secured endpoints. Which approach is most aligned with modern Keycloak testing practice for user-context calls (assuming Authorization Code flow is set up)?",
+                choices: [
+                    { t: "text", v: "Use Authorization Code flow in Postman with the configured callback URL to obtain a user token containing roles." },
+                    { t: "text", v: "Use Client Credentials always; it produces the same user roles but without the browser redirect." },
+                    { t: "text", v: "Use Password grant exclusively; it is preferred because it’s simplest and always recommended." },
+                    { t: "text", v: "Skip Keycloak and attach any JWT string; Spring only checks that it starts with 'Bearer'." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Security: why some endpoints return 404 instead of 401/403",
+                desc: "A teammate observes 404 on a protected endpoint when missing/invalid token. Which explanation is most plausible?",
+                choices: [
+                    { t: "text", v: "A gateway route may not be matching (routing issue), so the request never reaches Spring Security for that service." },
+                    { t: "text", v: "Spring Security always returns 404 for authentication failures to prevent enumeration." },
+                    { t: "text", v: "JWT parsing errors are always mapped to 404 by default." },
+                    { t: "text", v: "Redis cache turns 401 into 404 when entries are missing." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: which config exposes Prometheus metrics?",
+                desc: "Pick the configuration that best exposes actuator endpoints needed for Prometheus scraping (without exposing everything).",
+                choices: [
+                    { t: "code", v: `management:\n  endpoints:\n    web:\n      exposure:\n        include: health,info` },
+                    { t: "code", v: `management:\n  endpoints:\n    web:\n      exposure:\n        include: health,info,metrics,prometheus` },
+                    { t: "code", v: `management:\n  endpoint:\n    metrics:\n      enabled: false` },
+                    { t: "code", v: `management:\n  endpoints:\n    enabled-by-default: false` }
+                ],
+                answer: 1
+            },
+            {
+                title: "Resilience4j: Retry + CircuitBreaker ordering",
+                desc: "You apply @Retry and @CircuitBreaker on the same method calling a flaky downstream. What’s the most accurate risk if the retry happens BEFORE the breaker trips?",
+                choices: [
+                    { t: "text", v: "You can amplify load on the downstream during partial outage; multiple retries per request can increase failure volume and trip the breaker faster." },
+                    { t: "text", v: "Retry prevents the breaker from ever opening because successful retries are counted as failures." },
+                    { t: "text", v: "Breaker disables retry automatically; they cannot be used together." },
+                    { t: "text", v: "Retry changes HTTP status codes from 5xx to 2xx by rewriting responses." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Resilience4j fallback correctness vs business correctness",
+                desc: "A fallback returns a 'Default Resource' object when wellness-service is down. Which subtle correctness concern is most real?",
+                choices: [
+                    { t: "text", v: "Clients may treat fallback data as real and persist/act on it; you may need a marker field or status to avoid mixing default and true data." },
+                    { t: "text", v: "Fallback data cannot be serialized, so it will always crash the controller." },
+                    { t: "text", v: "Fallback automatically forces the circuit breaker to CLOSE." },
+                    { t: "text", v: "Fallback makes JWT tokens expire faster due to extra processing." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: which cache rule avoids caching fallback defaults?",
+                desc: "Assume your fallback returns ResourceDto(name='Default Resource'). Which approach most safely avoids caching fallback results while still caching real ones?",
+                choices: [
+                    { t: "code", v: `@Cacheable(value="resourceById", key="#id")\npublic ResourceDto get(String id){ ... }` },
+                    { t: "code", v: `@Cacheable(value="resourceById", key="#id", unless="#result != null && #result.name == 'Default Resource'")\npublic ResourceDto get(String id){ ... }` },
+                    { t: "code", v: `@CachePut(value="resourceById", key="#id")\npublic ResourceDto get(String id){ ... }` },
+                    { t: "code", v: `@CacheEvict(value="resourceById", allEntries=true)\npublic ResourceDto get(String id){ ... }` }
+                ],
+                answer: 1
+            },
+            {
+                title: "Redis TTL: why missing TTL can hurt correctness",
+                desc: "If you never expire cache keys for read-mostly data, what’s the most plausible long-term issue in a microservices system?",
+                choices: [
+                    { t: "text", v: "Schema/DTO evolution can make old cached values incompatible, causing deserialization issues or stale reads after deployments." },
+                    { t: "text", v: "Redis will automatically shrink keys and upgrade old objects in-place." },
+                    { t: "text", v: "No issue: Redis caches are always rebuilt every app restart." },
+                    { t: "text", v: "TTL only matters for cookies, not for cache entries." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Database ownership boundary: cross-service joins",
+                desc: "A team wants to run SQL joins between wellness and events tables across databases. What is the most architecture-consistent response?",
+                choices: [
+                    { t: "text", v: "Avoid cross-service DB joins; prefer service APIs or async events, because DB ownership is part of microservice isolation." },
+                    { t: "text", v: "Enable database links so every service can join everything—this improves cohesion." },
+                    { t: "text", v: "Copy all tables into one shared database to reduce operational complexity; microservices only need separate schemas." },
+                    { t: "text", v: "Joins are fine as long as API Gateway is present." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: which JPA mapping is most likely to cause lazy-loading surprises?",
+                desc: "Pick the snippet most likely to throw LazyInitializationException if accessed outside a transaction (common in REST serialization).",
+                choices: [
+                    { t: "code", v: `@ManyToOne(fetch = FetchType.LAZY)\nprivate Student student;` },
+                    { t: "code", v: `@Id\nprivate String id;` },
+                    { t: "code", v: `@Column(nullable=false)\nprivate String title;` },
+                    { t: "code", v: `@PrePersist\nvoid pre(){ ... }` }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway auth vs service auth: defense-in-depth",
+                desc: "You already validate JWT at the Gateway. Why still validate JWT in each microservice?",
+                choices: [
+                    { t: "text", v: "Defense-in-depth: services shouldn’t trust that requests always come through the Gateway; internal calls or misconfig can bypass it." },
+                    { t: "text", v: "Because TokenRelay only works if each service re-validates and re-signs the JWT." },
+                    { t: "text", v: "Because Redis requires JWT validation to store cached values." },
+                    { t: "text", v: "Because Springdoc disables itself unless microservices validate JWT." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: which is the better test assertion for protected endpoints?",
+                desc: "You test a protected POST endpoint without credentials. Which assertion is the most semantically precise (assuming default Spring Security behavior)?",
+                choices: [
+                    { t: "code", v: `andExpect(status().is4xxClientError())` },
+                    { t: "code", v: `andExpect(status().isUnauthorized())` },
+                    { t: "code", v: `andExpect(status().isOk())` },
+                    { t: "code", v: `andExpect(status().isNotFound())` }
+                ],
+                answer: 1
+            },
+            {
+                title: "Testcontainers: why container reuse can backfire",
+                desc: "You enable container reuse to speed up local testing. What’s the biggest risk for correctness of integration tests?",
+                choices: [
+                    { t: "text", v: "State leakage between tests (DB rows, topics, caches) can create order-dependent tests and flaky results." },
+                    { t: "text", v: "Reuse disables Docker networking, so services can’t connect." },
+                    { t: "text", v: "Reuse forces random ports to become fixed ports, breaking Keycloak." },
+                    { t: "text", v: "Reuse automatically deletes all volumes after each test." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Kafka: at-least-once delivery implication",
+                desc: "Your event-service processes GoalCompleted events and writes to Postgres. With at-least-once semantics, what is the most important design consideration?",
+                choices: [
+                    { t: "text", v: "Idempotency: the consumer should handle duplicates safely (e.g., unique constraints or processed-event table)." },
+                    { t: "text", v: "The consumer must always run single-threaded; otherwise Kafka duplicates every message." },
+                    { t: "text", v: "Schema Registry guarantees exactly-once delivery." },
+                    { t: "text", v: "Using Avro automatically deduplicates messages based on schema." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Schema evolution: compatible vs breaking change",
+                desc: "You want to add a new field to GoalCompletedEvent Avro schema. Which change is most likely to remain backward compatible for consumers?",
+                choices: [
+                    { t: "text", v: "Add a new field with a default value so older producers/consumers can still read the record." },
+                    { t: "text", v: "Rename an existing field and remove the old one." },
+                    { t: "text", v: "Change a field type from string to long with no migration strategy." },
+                    { t: "text", v: "Remove a required field entirely to reduce payload size." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: best place to secure Swagger UI",
+                desc: "You want Swagger UI secured so only staff/admin can access it. Which place is most appropriate to enforce this in a multi-service architecture?",
+                choices: [
+                    { t: "text", v: "At the Gateway (centralized control) AND optionally in services for defense-in-depth." },
+                    { t: "text", v: "Only in the services; the Gateway should never apply authorization rules." },
+                    { t: "text", v: "Only in Keycloak; Spring Security should not check roles." },
+                    { t: "text", v: "Only at Redis; cache entries decide who can see Swagger." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Subtle bug: inconsistent role strings",
+                desc: "One config checks for ROLE_staff, another checks for staff, and another checks for ADMIN. What’s the most realistic outcome if you don’t normalize mapping?",
+                choices: [
+                    { t: "text", v: "Some endpoints appear randomly forbidden depending on which service/gateway rule you hit, even though the same token is used." },
+                    { t: "text", v: "Tokens become invalid and fail signature validation because role strings differ." },
+                    { t: "text", v: "Gateway will auto-correct roles to match service rules." },
+                    { t: "text", v: "Spring Security merges all roles into ADMIN by default." }
+                ],
+                answer: 0
+            }
+
+            ,
+            {
+                title: "Gateway route + service base path mismatch (diagnosis)",
+                desc: "A request to /api/goals/123 returns 404 from the Gateway. The goal service controller is mapped to /goals/{id} (no /api prefix). No RewritePath/StripPrefix is configured. Which explanation is most accurate?",
+                code: `Gateway: Path=/api/goals/** -> goal-service\nService: @RequestMapping("/goals")`,
+                choices: [
+                    { t: "text", v: "The Gateway forwards /api/goals/123 as-is; the service expects /goals/123, so mappings don’t match unless you strip or rewrite the prefix." },
+                    { t: "text", v: "The service mapping is ignored because gateway routes always prepend /api automatically." },
+                    { t: "text", v: "JWT validation fails first and returns 404 instead of 401 by default." },
+                    { t: "text", v: "Feign clients inside the goal-service override the controller base path." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway: why a 'more specific' route might not be used",
+                desc: "You define routes for /api/** and /api/events/**. A request to /api/events/1 is going to the /api/** backend instead. What is the most plausible cause?",
+                choices: [
+                    { t: "text", v: "Route ordering: the first matching route may be selected; the broad route can shadow the more specific one if declared earlier." },
+                    { t: "text", v: "Gateway always chooses the shortest predicate, not the most specific." },
+                    { t: "text", v: "The /api/events/** route is ignored unless TokenRelay is enabled." },
+                    { t: "text", v: "Specific routes are used only when the backend uses WebFlux." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: best route fix for prefix mismatch",
+                desc: "Gateway matches /api/events/** but the service expects /events/**. Pick the cleanest filter choice.",
+                choices: [
+                    { t: "code", v: `filters:\n  - StripPrefix=1` },
+                    { t: "code", v: `filters:\n  - TokenRelay` },
+                    { t: "code", v: `filters:\n  - AddRequestHeader=X-Strip, 1` },
+                    { t: "code", v: `filters:\n  - SetResponseHeader=X-Rewritten, true` }
+                ],
+                answer: 0
+            },
+            {
+                title: "CORS preflight: what must be allowed",
+                desc: "Browser calls fail with a CORS preflight error when sending Authorization. Which is the most correct requirement for preflight to pass?",
+                choices: [
+                    { t: "text", v: "Allow the Origin, allow OPTIONS, and include Authorization in allowed headers (and expose headers if needed)." },
+                    { t: "text", v: "Disable JWT validation because preflight requests cannot include tokens." },
+                    { t: "text", v: "Add TokenRelay; it automatically replies to OPTIONS with 200." },
+                    { t: "text", v: "Only allow GET; preflight is never sent for POST if content-type is application/json." }
+                ],
+                answer: 0
+            },
+            {
+                title: "JWT roles mapping: realm vs resource access",
+                desc: "Your Keycloak token contains roles only in resource_access.<client>.roles, but your converter reads realm_access.roles. What is the most likely symptom?",
+                choices: [
+                    { t: "text", v: "Authentication succeeds (token valid), but role-based authorization fails because authorities are never created from the client role claim." },
+                    { t: "text", v: "Token validation fails because Spring requires realm_access.roles for signature checking." },
+                    { t: "text", v: "Only Swagger breaks; API endpoints keep working due to gateway caching." },
+                    { t: "text", v: "Roles are merged automatically by Spring into ROLE_USER even if missing." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: Converter bug (claim path misunderstanding)",
+                desc: "Which snippet is most likely wrong because it assumes nested claim paths work as a flat string?",
+                choices: [
+                    { t: "code", v: `c.setAuthoritiesClaimName("realm_access.roles");` },
+                    { t: "code", v: `c.setAuthorityPrefix("ROLE_");` },
+                    { t: "code", v: `c.setAuthorityPrefix("");` },
+                    { t: "code", v: `c.setAuthoritiesClaimName("roles");` }
+                ],
+                answer: 0
+            },
+            {
+                title: "OAuth2: 401 vs 403 nuance under missing roles",
+                desc: "A request includes a valid JWT but lacks ROLE_staff required by the endpoint. What status is most semantically correct?",
+                choices: [
+                    { t: "text", v: "403 Forbidden, because the user is authenticated but not authorized." },
+                    { t: "text", v: "401 Unauthorized, because any access denial is an authentication failure." },
+                    { t: "text", v: "404 Not Found, because security always hides endpoints." },
+                    { t: "text", v: "500, because role checks happen after controller execution." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Actuator exposure: why /actuator/prometheus returns 404",
+                desc: "Health works but /actuator/prometheus is 404 in a service. What is the most likely config issue?",
+                code: `management.endpoints.web.exposure.include: health,info`,
+                choices: [
+                    { t: "text", v: "prometheus endpoint isn’t exposed in include list (or the micrometer registry dependency is missing)." },
+                    { t: "text", v: "prometheus requires ADMIN by default, so 404 means missing token." },
+                    { t: "text", v: "prometheus only works in the Gateway, not services." },
+                    { t: "text", v: "prometheus can’t run with PostgreSQL containers." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Resilience4j: counting failures with minimumNumberOfCalls",
+                desc: "With minimumNumberOfCalls=5 and slidingWindowSize=10, what happens if the first 4 calls fail?",
+                choices: [
+                    { t: "text", v: "The breaker typically won’t open yet because it hasn’t reached the minimum call threshold for evaluation." },
+                    { t: "text", v: "It opens immediately because failureRateThreshold compares against current failures." },
+                    { t: "text", v: "It permanently disables the circuit breaker instance." },
+                    { t: "text", v: "It opens only if waitDurationInOpenState is set." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Retry + CircuitBreaker: hidden amplification risk",
+                desc: "A downstream service is degraded. You apply Retry(maxAttempts=3) and CircuitBreaker. What is the most realistic concern?",
+                choices: [
+                    { t: "text", v: "Retries can multiply load and increase cascading failures; breaker may trip faster, but outage blast radius can be worse." },
+                    { t: "text", v: "Retries always reduce latency because failures are cached." },
+                    { t: "text", v: "Breaker forces retries to run only once." },
+                    { t: "text", v: "Retry converts 5xx into 2xx responses by design." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Caching: stale list issue after create",
+                desc: "You cache getAllResources() but forget to evict that cache when creating a new resource. What is the most likely user-visible symptom?",
+                choices: [
+                    { t: "text", v: "New resource exists by ID, but list view stays stale until cache expires/clears." },
+                    { t: "text", v: "Create fails because list cache must be cleared before inserts." },
+                    { t: "text", v: "Redis prevents the resourceById cache from updating." },
+                    { t: "text", v: "Swagger UI stops rendering due to cache key collision." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: safest way to avoid caching fallback defaults",
+                desc: "Fallback returns ResourceDto(name='Default Resource'). Which @Cacheable is most defensive to avoid caching fallback values?",
+                choices: [
+                    { t: "code", v: `@Cacheable(value="resourceById", key="#id")` },
+                    { t: "code", v: `@Cacheable(value="resourceById", key="#id", unless="#result != null && #result.name == 'Default Resource'")` },
+                    { t: "code", v: `@CachePut(value="resourceById", key="#id")` },
+                    { t: "code", v: `@CacheEvict(value="resourceById", allEntries=true)` }
+                ],
+                answer: 1
+            },
+            {
+                title: "Redis serialization: post-deploy deserialization errors",
+                desc: "After a deployment, cached DTO reads throw deserialization errors. Which is the best explanation?",
+                choices: [
+                    { t: "text", v: "Old cached values were serialized with a previous class/serializer; schema changes can break deserialization unless you version/clear cache or use stable JSON." },
+                    { t: "text", v: "Redis can’t store objects; it always fails after restart." },
+                    { t: "text", v: "Spring Cache automatically migrates old serialized objects to new versions." },
+                    { t: "text", v: "Deserialization errors only happen when using Keycloak." }
+                ],
+                answer: 0
+            },
+            {
+                title: "DB migration race: Flyway and container readiness",
+                desc: "Service starts before Postgres is ready; Flyway runs and fails. What is the most robust fix pattern in docker-compose deployments?",
+                choices: [
+                    { t: "text", v: "Use healthchecks (DB + service) and startup retry/backoff (or depends_on conditions) so migrations run when DB is reachable." },
+                    { t: "text", v: "Remove Flyway and rely on ddl-auto=create in production." },
+                    { t: "text", v: "Increase JVM heap to avoid migration timeouts." },
+                    { t: "text", v: "Expose DB ports to host; readiness checks only work on host ports." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Microservice boundary: cross-service database joins",
+                desc: "A teammate suggests joining wellness and events tables across service databases for reporting. What is most consistent with microservices boundaries?",
+                choices: [
+                    { t: "text", v: "Avoid cross-service joins; prefer API composition or events/materialized views because each service owns its data." },
+                    { t: "text", v: "Enable DB links so services can query each other; this improves independence." },
+                    { t: "text", v: "Merge all data into one shared DB; microservices should share tables to reduce duplication." },
+                    { t: "text", v: "Use the Gateway to perform SQL joins since it already routes requests." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Kafka: at-least-once processing implication",
+                desc: "Event-service consumes GoalCompleted events and writes to Postgres. With at-least-once delivery, what is the most critical design requirement?",
+                choices: [
+                    { t: "text", v: "Idempotency: handle duplicate events safely (unique constraints or processed-event tracking)." },
+                    { t: "text", v: "Single-threaded consumer required or duplicates happen automatically." },
+                    { t: "text", v: "Schema Registry guarantees exactly-once delivery." },
+                    { t: "text", v: "Avro encoding deduplicates messages by schema fingerprint." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Schema evolution: safe Avro change",
+                desc: "You want to add a new field to GoalCompletedEvent. Which change is most compatible across mixed producer/consumer versions?",
+                choices: [
+                    { t: "text", v: "Add the field with a default value so older readers/writers can still interpret records." },
+                    { t: "text", v: "Rename an existing field and remove the old field." },
+                    { t: "text", v: "Change a field type (string -> long) without defaults or migration." },
+                    { t: "text", v: "Remove a required field to reduce payload size." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Consumer scaling: what happens with 3 instances",
+                desc: "You run 3 instances of event-service in the same consumer group consuming the same topic. Which behavior is most accurate?",
+                choices: [
+                    { t: "text", v: "Partitions are assigned among instances; each message is processed by only one instance per partition assignment." },
+                    { t: "text", v: "All instances process every message for redundancy." },
+                    { t: "text", v: "Only one instance can ever consume; others are blocked until the leader crashes." },
+                    { t: "text", v: "Messages broadcast to all instances when Schema Registry is enabled." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: identify the cache annotation bug",
+                desc: "Assume method signature getById(String id). Which annotation usage is most likely buggy/invalid in Spring caching?",
+                choices: [
+                    { t: "code", v: `@Cacheable(value="resourceById", key="#id")` },
+                    { t: "code", v: `@Cacheable(value="resourceById", key="#result.id")` },
+                    { t: "code", v: `@CachePut(value="resourceById", key="#id")` },
+                    { t: "code", v: `@CacheEvict(value="resourceById", key="#id")` }
+                ],
+                answer: 1
+            },
+            {
+                title: "Security: why validate JWT in each service if Gateway validates",
+                desc: "If the Gateway already validates JWTs, why should each microservice still validate JWTs too?",
+                choices: [
+                    { t: "text", v: "Defense-in-depth: services shouldn’t assume every request came through the Gateway; misroutes or internal access can bypass it." },
+                    { t: "text", v: "TokenRelay only works if each service re-signs the JWT." },
+                    { t: "text", v: "Redis caching requires service-level JWT validation." },
+                    { t: "text", v: "Springdoc disables endpoints unless services validate JWT." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Testing: precise vs flexible status assertion",
+                desc: "A protected GET endpoint without token might return 401 or 403 depending on config. Why might a test use is4xxClientError() instead of isUnauthorized()?",
+                choices: [
+                    { t: "text", v: "To tolerate security configuration differences (401 vs 403) while still verifying the endpoint is protected." },
+                    { t: "text", v: "Because MockMvc cannot reliably read status codes." },
+                    { t: "text", v: "Because Spring Security never returns 401 for GET requests." },
+                    { t: "text", v: "Because 4xx assertions are required when using Testcontainers." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Feign + OAuth: why service-to-service may fail while gateway works",
+                desc: "Requests through the Gateway succeed, but Feign calls between services fail with 401. What is the most plausible reason?",
+                choices: [
+                    { t: "text", v: "Feign call is missing/incorrect Authorization forwarding (no TokenRelay at this hop), so downstream rejects it." },
+                    { t: "text", v: "Gateway 'unlocks' services, so internal calls no longer require auth." },
+                    { t: "text", v: "Feign forces tokens to be opaque, so JWT validation fails." },
+                    { t: "text", v: "Resilience4j disables Authorization headers for safety." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: which Security config most clearly blocks anonymous access",
+                desc: "Choose the snippet that most clearly indicates 'everything requires authentication' except explicitly permitted paths (WebFlux style).",
+                choices: [
+                    { t: "code", v: `http.authorizeExchange(ex -> ex.anyExchange().authenticated())` },
+                    { t: "code", v: `http.authorizeRequests(req -> req.anyRequest().permitAll())` },
+                    { t: "code", v: `http.csrf().disable();` },
+                    { t: "code", v: `http.headers().frameOptions().disable();` }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway: aggregated swagger secured but docs still accessible",
+                desc: "You secure /api/swagger-ui on Gateway, but users can still hit /api/goals/v3/api-docs directly. What is the best interpretation?",
+                choices: [
+                    { t: "text", v: "You secured the UI path but not the underlying docs endpoints; you need to secure /v3/api-docs routes too (and/or service-side)." },
+                    { t: "text", v: "Swagger UI security automatically covers /v3/api-docs for all services." },
+                    { t: "text", v: "This can’t happen; /v3/api-docs is always blocked once swagger-ui is blocked." },
+                    { t: "text", v: "Redis cache exposes /v3/api-docs regardless of security." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Docker: localhost vs service DNS in containers",
+                desc: "In docker profile, you set spring.data.mongodb.uri=mongodb://localhost:27017. The app can’t connect. Why is this common?",
+                choices: [
+                    { t: "text", v: "Inside the container, localhost refers to the container itself; it must use the Mongo container service name (e.g., mongodb) on the Docker network." },
+                    { t: "text", v: "MongoDB blocks localhost connections in Docker unless TLS is enabled." },
+                    { t: "text", v: "Spring Boot forbids localhost URIs in docker profiles." },
+                    { t: "text", v: "JWT issuer-uri must match mongodb host name for connectivity." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Keycloak: redirect URIs too broad risk",
+                desc: "A client allows redirect URIs like http://localhost:9000/* and also very broad wildcards. What is the real security risk?",
+                choices: [
+                    { t: "text", v: "Open redirect / token leakage risk: overly broad redirect URIs can allow attackers to capture authorization codes/tokens via crafted redirects." },
+                    { t: "text", v: "It breaks JWT signature validation because redirect URIs are included in the token." },
+                    { t: "text", v: "It forces the client to use only client credentials flow." },
+                    { t: "text", v: "It disables CORS checks automatically." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: choose the best idempotency guard for event consumer",
+                desc: "Event-service writes a row on GoalCompleted. Which approach is most effective for handling duplicates safely?",
+                choices: [
+                    { t: "text", v: "Use a unique constraint on goalId (or eventId) and treat duplicates as no-ops, optionally tracking processed event IDs." },
+                    { t: "text", v: "Add Thread.sleep(500) before inserting to reduce duplicates." },
+                    { t: "text", v: "Disable Kafka retries; duplicates cannot happen then." },
+                    { t: "text", v: "Use Swagger UI to test events manually; duplicates only come from tests." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Testing: what makes integration tests flaky with many containers",
+                desc: "Kafka + Keycloak + Postgres + Mongo are started in tests. Which is the most realistic source of flakiness?",
+                choices: [
+                    { t: "text", v: "Startup ordering/readiness: services may attempt connections before dependencies are fully healthy; timeouts and race conditions occur." },
+                    { t: "text", v: "JUnit prevents more than one container per test class." },
+                    { t: "text", v: "Docker always assigns the same port, causing collisions." },
+                    { t: "text", v: "Keycloak disables Postgres networking by default." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: best place to enforce Swagger authorization",
+                desc: "You want Swagger locked to staff/admin. Where should you enforce the policy for best coverage?",
+                choices: [
+                    { t: "text", v: "At the Gateway (central) and optionally again in each service for defense-in-depth." },
+                    { t: "text", v: "Only in services; gateways should not contain any authorization logic." },
+                    { t: "text", v: "Only in Keycloak; Spring Security should not check roles." },
+                    { t: "text", v: "Only in Redis; cache keys enforce role access." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Subtle bug: role string inconsistency across layers",
+                desc: "Gateway checks ROLE_staff, service checks staff, another service checks ADMIN. Without a consistent mapping strategy, what is the most likely real-world symptom?",
+                choices: [
+                    { t: "text", v: "Some endpoints work while others 403 unexpectedly with the same token, depending on how each layer interprets/matches authorities." },
+                    { t: "text", v: "Tokens fail signature validation because roles differ." },
+                    { t: "text", v: "Gateway automatically normalizes all roles into ADMIN." },
+                    { t: "text", v: "Feign silently rewrites roles to match downstream." }
+                ],
+                answer: 0
+            }
+            ,
+            {
+                title: "Gateway predicate: Path vs Host interaction",
+                desc: "You add a Host predicate for api.local and a Path predicate for /api/**. Calls from Postman work when you hit localhost:9000, but browser calls using a different host header fail routing. What is the most plausible explanation?",
+                code: `predicates:\n  - Host=api.local\n  - Path=/api/**`,
+                choices: [
+                    { t: "text", v: "The request Host header doesn’t match api.local, so the route never matches; Path alone is insufficient when Host predicate is present." },
+                    { t: "text", v: "Host predicates are ignored unless HTTPS is enabled." },
+                    { t: "text", v: "Path predicates only match when using WebMVC, not WebFlux." },
+                    { t: "text", v: "TokenRelay rewrites Host headers, so Host predicate becomes unpredictable." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway filter order: why response headers aren’t visible",
+                desc: "You set a response header via SetResponseHeader, but it doesn’t appear on certain errors (401/403). Which is most accurate?",
+                choices: [
+                    { t: "text", v: "Security may short-circuit the request before the route filter chain executes; some route filters won’t run when access is denied." },
+                    { t: "text", v: "SetResponseHeader only works for 2xx responses." },
+                    { t: "text", v: "Headers cannot be set when using Redis caching." },
+                    { t: "text", v: "SetResponseHeader requires @ControllerAdvice in each microservice." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: best Gateway approach to unify /api prefix",
+                desc: "You want all external routes to start with /api, but internal services should not include /api in controllers. Which Gateway config is most scalable?",
+                choices: [
+                    { t: "text", v: "Keep /api externally, and use StripPrefix=1 or RewritePath per service route so downstream sees clean service paths." },
+                    { t: "text", v: "Remove /api from gateway routes and add /api into every service controller mapping for consistency." },
+                    { t: "text", v: "Expose every service directly and add /api prefix only in Postman collections." },
+                    { t: "text", v: "Use TokenRelay; it automatically standardizes all paths." }
+                ],
+                answer: 0
+            },
+            {
+                title: "JWT audience claim subtlety",
+                desc: "A token is valid and signed, but your resource server rejects it due to audience mismatch. What does this typically imply?",
+                choices: [
+                    { t: "text", v: "The resource server is configured to require an aud value that the token doesn’t contain; token can be valid but not intended for this API." },
+                    { t: "text", v: "Audience is used only for refresh tokens, not access tokens." },
+                    { t: "text", v: "Audience mismatch always returns 404, not 401." },
+                    { t: "text", v: "The aud claim is only checked when using client credentials flow." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: which config is most likely to cause 403 for everyone",
+                desc: "Pick the snippet most likely to block access even when a user has the right role, due to a role/authority mismatch.",
+                choices: [
+                    { t: "code", v: `.pathMatchers("/api/resources/**").hasRole("ROLE_staff")` },
+                    { t: "code", v: `.pathMatchers("/api/resources/**").hasRole("staff")` },
+                    { t: "code", v: `.pathMatchers("/api/resources/**").hasAuthority("ROLE_staff")` },
+                    { t: "code", v: `.pathMatchers("/api/resources/**").authenticated()` }
+                ],
+                answer: 0
+            },
+            {
+                title: "Keycloak: realm roles not appearing in token",
+                desc: "A user is assigned realm roles in Keycloak, but the JWT has no realm_access.roles claim. Which is most plausible?",
+                choices: [
+                    { t: "text", v: "The client scope/mapper isn’t configured to include realm roles in the token, so roles exist in Keycloak but aren’t emitted in JWT." },
+                    { t: "text", v: "Realm roles can’t be included in JWTs; only client roles are allowed." },
+                    { t: "text", v: "Roles are only shown in the refresh token, not the access token." },
+                    { t: "text", v: "Spring removes roles during TokenRelay for security." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Swagger UI security: misleading 'Authorize' behavior",
+                desc: "Swagger UI shows an Authorize button and you paste a token, but requests still 401. What is the most likely reason?",
+                choices: [
+                    { t: "text", v: "The OpenAPI security scheme might not be applied to the operations (missing SecurityRequirement), so Swagger doesn’t attach the token to calls." },
+                    { t: "text", v: "Swagger UI can’t send Authorization headers in browsers." },
+                    { t: "text", v: "Keycloak tokens cannot be used with Swagger UI; only basic auth works." },
+                    { t: "text", v: "Bearer tokens only work if Redis is disabled." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: OpenAPI scheme that matches Bearer JWT intent",
+                desc: "Which OpenAPI security scheme most accurately represents Bearer JWT usage?",
+                choices: [
+                    { t: "code", v: `new SecurityScheme().type(SecurityScheme.Type.APIKEY).in(SecurityScheme.In.QUERY).name("token")` },
+                    { t: "code", v: `new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")` },
+                    { t: "code", v: `new SecurityScheme().type(SecurityScheme.Type.OAUTH2).flows(new OAuthFlows())` },
+                    { t: "code", v: `new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("basic")` }
+                ],
+                answer: 1
+            },
+            {
+                title: "Caching: @CachePut vs @Cacheable subtlety",
+                desc: "A method updateResource(id, req) uses @Cacheable on resourceById. Why is that usually a mistake compared to @CachePut?",
+                choices: [
+                    { t: "text", v: "@Cacheable may skip method execution if an entry exists, which is undesirable for updates; @CachePut forces execution and updates cache." },
+                    { t: "text", v: "@Cacheable only works with Redis, not local caches." },
+                    { t: "text", v: "@CachePut can’t be used on write methods because it runs after commit." },
+                    { t: "text", v: "@Cacheable is required so that transactions propagate properly." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: identify wrong usage for create",
+                desc: "A createResource(req) returns ResourceDto with generated id. Which cache rule is least reliable for ensuring a correct key is used?",
+                choices: [
+                    { t: "code", v: `@CachePut(value="resourceById", key="#result.id")` },
+                    { t: "code", v: `@CachePut(value="resourceById", key="#result.id()")` },
+                    { t: "code", v: `@CachePut(value="resourceById", key="#req.id")` },
+                    { t: "code", v: `@Caching(evict=@CacheEvict(value="allResources", allEntries=true))` }
+                ],
+                answer: 2
+            },
+            {
+                title: "Redis: cache stampede scenario",
+                desc: "When a hot key expires, many requests hit DB at once and overload it. What pattern best addresses this without disabling caching?",
+                choices: [
+                    { t: "text", v: "Use request coalescing/locking, or add jittered TTLs; optionally pre-warm caches for hot keys." },
+                    { t: "text", v: "Disable TTL entirely so keys never expire." },
+                    { t: "text", v: "Use client credentials tokens; they reduce DB load." },
+                    { t: "text", v: "Turn on Swagger aggregation; it reduces stampede effects." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Resilience4j: fallback method resolution",
+                desc: "A fallback exists but is never called; instead you get a runtime exception about missing fallback. What is the most likely cause?",
+                choices: [
+                    { t: "text", v: "Fallback signature mismatch (parameters/order) so Resilience4j cannot resolve it for the annotated method." },
+                    { t: "text", v: "Fallbacks only work when Redis is enabled." },
+                    { t: "text", v: "Fallbacks only work for GET endpoints, not POST." },
+                    { t: "text", v: "Fallbacks require @ControllerAdvice to activate." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: correct fallback signature for method with 2 args",
+                desc: "Method: ResourceDto find(String id, boolean includeDetails). Choose the fallback that is most likely to match.",
+                choices: [
+                    { t: "code", v: `ResourceDto fallback(String id, Throwable t, boolean includeDetails)` },
+                    { t: "code", v: `ResourceDto fallback(String id, boolean includeDetails, Throwable t)` },
+                    { t: "code", v: `ResourceDto fallback(Throwable t, String id, boolean includeDetails)` },
+                    { t: "code", v: `void fallback(String id, boolean includeDetails, Throwable t)` }
+                ],
+                answer: 1
+            },
+            {
+                title: "Gateway: why TokenRelay doesn’t help Feign calls",
+                desc: "TokenRelay is enabled on Gateway routes, but a service-to-service Feign call still lacks Authorization. Why is this expected?",
+                choices: [
+                    { t: "text", v: "TokenRelay only affects gateway-to-service forwarding; internal Feign calls need their own interceptor or token propagation strategy." },
+                    { t: "text", v: "TokenRelay only works with cookies, not headers." },
+                    { t: "text", v: "TokenRelay disables Authorization headers for non-GET requests." },
+                    { t: "text", v: "TokenRelay is replaced by Springdoc when Swagger aggregation is enabled." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Service security: risk of trusting X-User headers",
+                desc: "A dev proposes: Gateway verifies JWT then passes X-User-Id header; services trust X-User-Id without validating JWT. What is the core security risk?",
+                choices: [
+                    { t: "text", v: "Header spoofing: if any request reaches the service directly, an attacker can forge X-User-Id without a valid token." },
+                    { t: "text", v: "Keycloak refuses to issue tokens if custom headers are used." },
+                    { t: "text", v: "Redis can’t cache responses when headers are present." },
+                    { t: "text", v: "It causes Swagger to merge specs incorrectly." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Actuator + security: why health is visible but metrics is not",
+                desc: "You can access /actuator/health, but /actuator/metrics is forbidden. What is the most plausible reason in secured apps?",
+                choices: [
+                    { t: "text", v: "Security rules often permit health/info for ops, but restrict metrics/prometheus to privileged roles or authenticated access." },
+                    { t: "text", v: "metrics endpoint only exists on the Gateway." },
+                    { t: "text", v: "metrics endpoint requires Redis; without it, it returns 403." },
+                    { t: "text", v: "Keycloak blocks actuator endpoints by default regardless of service config." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Kafka + DB write: transactional boundary",
+                desc: "Consumer reads message, writes to DB, then crashes before committing offsets. What is the likely consequence and recommended handling?",
+                choices: [
+                    { t: "text", v: "Message may be reprocessed (duplicate). Handle with idempotency or transactional outbox/inbox patterns." },
+                    { t: "text", v: "Message is lost permanently because Kafka deletes it after delivery." },
+                    { t: "text", v: "Offsets commit automatically before processing, guaranteeing exactly-once." },
+                    { t: "text", v: "Schema Registry prevents duplicates by comparing payload hashes." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: which approach best enforces unique processing",
+                desc: "Event consumer uses goalId as a business key. Which is the most effective safeguard against duplicates at DB layer?",
+                choices: [
+                    { t: "text", v: "Add a unique index/constraint on goalId (or eventId) and treat constraint violations as already-processed events." },
+                    { t: "text", v: "Store the last processed goalId in an in-memory variable." },
+                    { t: "text", v: "Increase Kafka partitions; duplicates disappear when partitions increase." },
+                    { t: "text", v: "Use GET endpoints only; POST creates duplicates." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Testing: why integration tests pass locally but fail in CI",
+                desc: "Tests pass on your laptop but fail on CI runners. Which is most plausible in container-heavy integration testing?",
+                choices: [
+                    { t: "text", v: "Resource/time constraints and slower startup on CI lead to readiness/race failures; timeouts need tuning and health checks." },
+                    { t: "text", v: "CI networks block all localhost access inside containers, but laptops allow it." },
+                    { t: "text", v: "JUnit behaves differently on CI by changing HTTP status codes." },
+                    { t: "text", v: "Keycloak tokens are invalid on weekdays due to clock drift by design." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: most robust healthcheck endpoint choice",
+                desc: "Pick the best healthcheck probe for Docker orchestrators in Spring Boot services.",
+                choices: [
+                    { t: "code", v: `curl -f http://localhost:8080/actuator/health || exit 1` },
+                    { t: "code", v: `curl -f http://localhost:8080/swagger-ui/index.html || exit 1` },
+                    { t: "code", v: `curl -f http://localhost:8080/v3/api-docs || exit 1` },
+                    { t: "code", v: `curl -f http://localhost:8080/ || exit 1` }
+                ],
+                answer: 0
+            },
+            {
+                title: "Gateway: why 502 Bad Gateway happens",
+                desc: "Gateway returns 502 for /api/events/**, but the event-service container is 'up'. Which is the most likely root cause?",
+                choices: [
+                    { t: "text", v: "Gateway can’t connect to the service host/port (wrong port, wrong hostname, service not listening on expected interface, or network mismatch)." },
+                    { t: "text", v: "502 means JWT validation failed." },
+                    { t: "text", v: "502 only occurs when Redis is down." },
+                    { t: "text", v: "502 is returned when Swagger docs are not aggregated." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: incorrect port mapping reasoning",
+                desc: "A service listens on 8082 inside container, but compose maps 8086:8082. Gateway runs inside the same compose network. Which is correct for the Gateway to call?",
+                choices: [
+                    { t: "text", v: "Use the container port (8082) via service DNS name; mapped host port (8086) is for host-to-container access, not container-to-container." },
+                    { t: "text", v: "Use 8086 because all containers must use mapped host ports to communicate." },
+                    { t: "text", v: "Use both 8082 and 8086; Gateway will pick whichever responds first." },
+                    { t: "text", v: "Use 9000 because that’s the Gateway port; it forwards internally." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Security: why POST works but PUT fails with same token",
+                desc: "Using the same JWT, POST /api/resources works but PUT /api/resources/{id} returns 403. What is a realistic explanation?",
+                choices: [
+                    { t: "text", v: "Method-level or path-specific authorization differs (e.g., PUT requires staff role while POST might be open to student), or the security matcher patterns differ." },
+                    { t: "text", v: "PUT requests cannot include Authorization headers by HTTP spec." },
+                    { t: "text", v: "Keycloak issues different signatures depending on HTTP method." },
+                    { t: "text", v: "Redis caches POST but not PUT, causing token loss." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: safest Postman pattern for refreshing tokens",
+                desc: "Your Postman collection uses an access token that expires. Which approach is most maintainable for repeated testing?",
+                choices: [
+                    { t: "text", v: "Use OAuth2 in Postman with Authorization Code flow and auto-refresh (or a pre-request script to renew tokens) rather than manually pasting tokens." },
+                    { t: "text", v: "Hardcode the token in every request; tokens don’t expire if you reuse them frequently." },
+                    { t: "text", v: "Use Swagger UI to generate tokens; Postman cannot request tokens reliably." },
+                    { t: "text", v: "Disable token expiration in Keycloak; it is best practice for development and production." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: bug in role naming (capitalization & prefix)",
+                desc: "A token has role 'staff'. Your service checks for 'ROLE_STAFF'. Assuming a straightforward mapper, what is most likely?",
+                choices: [
+                    { t: "text", v: "Authorization fails because authority strings must match exactly; normalization (prefix/case) must be consistent across mapping and checks." },
+                    { t: "text", v: "Authorization succeeds because Spring uppercases roles automatically." },
+                    { t: "text", v: "Authorization succeeds only for GET requests due to default role hierarchy." },
+                    { t: "text", v: "Authorization fails only in Docker, not locally." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Service-to-service auth strategy choice",
+                desc: "Your internal Feign call needs auth but shouldn’t rely on end-user tokens. Which strategy is most appropriate?",
+                choices: [
+                    { t: "text", v: "Use client credentials for service accounts for service-to-service calls, and use user tokens only when user-context authorization is required." },
+                    { t: "text", v: "Always forward user tokens; service accounts are insecure by definition." },
+                    { t: "text", v: "Disable auth for internal calls; docker network is already secure." },
+                    { t: "text", v: "Use Redis keys as authentication tokens; Keycloak is for browsers only." }
+                ],
+                answer: 0
+            },
+            {
+                title: "Code-based: which is a correct gateway security matcher for docs",
+                desc: "You want to lock down docs across services routed under /api/<service>/v3/api-docs. Which is most reliable as a matcher?",
+                choices: [
+                    { t: "text", v: "Match /api/**/v3/api-docs/** (or /api/*/v3/api-docs/** depending on your layout) and /swagger-ui/** in the Gateway rules." },
+                    { t: "text", v: "Only match /swagger-ui/**; docs JSON is always protected by Swagger UI automatically." },
+                    { t: "text", v: "Match /v3/api-docs only at the service; the gateway cannot match nested paths." },
+                    { t: "text", v: "Only match /webjars/**; swagger docs are served from webjars." }
+                ],
+                answer: 0
+            }
+        ];
+
+        // --- State ---
+        const state = {
+            answered: new Array(QUESTIONS.length).fill(false),
+            correct: 0,
+            wrong: 0,
+            revealed: false
+        };
+
+        const quizEl = document.getElementById("quiz");
+        const answeredEl = document.getElementById("answered");
+        const totalEl = document.getElementById("total");
+        const correctEl = document.getElementById("correct");
+        const wrongEl = document.getElementById("wrong");
+        const scorePctEl = document.getElementById("scorePct");
+        const restartBtn = document.getElementById("restartBtn");
+        const revealBtn = document.getElementById("revealBtn");
+
+        totalEl.textContent = String(QUESTIONS.length);
+
+        function updateTopBar() {
+            const answeredCount = state.answered.filter(Boolean).length;
+            answeredEl.textContent = String(answeredCount);
+            correctEl.textContent = String(state.correct);
+            wrongEl.textContent = String(state.wrong);
+            const pct = QUESTIONS.length ? Math.round((state.correct / QUESTIONS.length) * 100) : 0;
+            scorePctEl.textContent = `${pct}%`;
+        }
+
+        function setBadge(qIndex, type, text) {
+            const badge = document.getElementById(`badge-${qIndex}`);
+            badge.classList.remove("wait", "ok", "bad");
+            badge.classList.add(type);
+            badge.textContent = text;
+        }
+
+        function lockQuestion(qIndex) {
+            document.querySelectorAll(`input[name="q-${qIndex}"]`)
+                .forEach(r => r.disabled = true);
+        }
+
+        function revealOne(qIndex) {
+            const correctIndex = QUESTIONS[qIndex].answer;
+            const labels = document.querySelectorAll(`#q-${qIndex} label.choice`);
+            labels.forEach((lab, idx) => {
+                lab.style.outline = "none";
+                lab.style.background = "#fff";
+                if (idx === correctIndex) {
+                    lab.style.outline = "2px solid rgba(22,163,74,.35)";
+                    lab.style.background = "rgba(22,163,74,.07)";
+                }
+            });
+            const note = document.getElementById(`note-${qIndex}`);
+            if (note && !note.textContent.includes("Correct answer")) {
+                note.textContent = (note.textContent ? note.textContent + " " : "") + "(Correct answer highlighted.)";
+            }
+        }
+
+        function revealAll() {
+            state.revealed = true;
+            QUESTIONS.forEach((_, i) => revealOne(i));
+        }
+
+        function maybeShowFinalBanner() {
+            const answeredCount = state.answered.filter(Boolean).length;
+            if (answeredCount !== QUESTIONS.length) return;
+
+            if (document.getElementById("final-banner")) return;
+
+            const banner = document.createElement("section");
+            banner.className = "q";
+            banner.id = "final-banner";
+            banner.innerHTML = `
+        <div class="qhead">
+          <div class="qnum">Done</div>
+          <div class="qtitle">Final results</div>
+          <div class="badge ${state.wrong === 0 ? "ok" : "wait"}">${state.wrong === 0 ? "Perfect" : "Completed"}</div>
+        </div>
+        <p style="margin:0;color:var(--muted);line-height:1.55">
+          You got <strong>${state.correct}</strong> correct and <strong>${state.wrong}</strong> wrong out of <strong>${QUESTIONS.length}</strong>.
+        </p>
+        <div class="hint">Tip: Use “Reveal Answers” only after you finish.</div>
+      `;
+            quizEl.prepend(banner);
+            banner.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        function handleAnswer(qIndex, chosenIndex) {
+            if (state.answered[qIndex]) return;
+
+            const correctIndex = QUESTIONS[qIndex].answer;
+            state.answered[qIndex] = true;
+
+            const note = document.getElementById(`note-${qIndex}`);
+            const done = document.getElementById(`done-${qIndex}`);
+
+            if (chosenIndex === correctIndex) {
+                state.correct += 1;
+                setBadge(qIndex, "ok", "Correct");
+                note.textContent = "✅ Right.";
+                done.textContent = "Locked (answered).";
+            } else {
+                state.wrong += 1;
+                setBadge(qIndex, "bad", "Wrong");
+                note.textContent = "❌ Wrong.";
+                done.textContent = "Locked (answered).";
+            }
+
+            lockQuestion(qIndex);
+            if (state.revealed) revealOne(qIndex);
+            updateTopBar();
+            maybeShowFinalBanner();
+        }
+
+        function render() {
+            quizEl.innerHTML = "";
+
+            QUESTIONS.forEach((item, i) => {
+                const wrapper = document.createElement("section");
+                wrapper.className = "q";
+                wrapper.id = `q-${i}`;
+
+                const codeBlock = item.code
+                    ? `<pre><code>${escHTML(item.code)}</code></pre>`
+                    : "";
+
+                const choicesHTML = item.choices.map((c, idx) => {
+                    return `
+            <label class="choice" for="q-${i}-a-${idx}">
+              <input type="radio" id="q-${i}-a-${idx}" name="q-${i}" value="${idx}" />
+              ${renderChoice(c)}
+            </label>
+          `;
+                }).join("");
+
+                wrapper.innerHTML = `
+          <div class="qhead">
+            <div class="qnum">Q${i + 1}</div>
+            <div style="flex:1">
+              <div class="qtitle">${escHTML(item.title)}</div>
+              <div class="qdesc">${escHTML(item.desc)}</div>
+            </div>
+            <div class="badge wait" id="badge-${i}">Not answered</div>
+          </div>
+          ${codeBlock}
+          <div class="choices">${choicesHTML}</div>
+          <div class="muted" id="note-${i}"></div>
+          <div class="footer">
+            <div class="done" id="done-${i}">Pick one answer.</div>
+            <div class="done">1 point</div>
+          </div>
+        `;
+
+                quizEl.appendChild(wrapper);
+
+                wrapper.querySelectorAll(`input[name="q-${i}"]`)
+                    .forEach(radio => radio.addEventListener("change", () => handleAnswer(i, Number(radio.value))));
+            });
+
+            updateTopBar();
+        }
+
+        function restart() {
+            state.answered = new Array(QUESTIONS.length).fill(false);
+            state.correct = 0;
+            state.wrong = 0;
+            state.revealed = false;
+            render();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+
+        restartBtn.addEventListener("click", restart);
+        revealBtn.addEventListener("click", revealAll);
+
+        render();
+    </script>
+</body>
+
+</html>
